@@ -5,3 +5,7 @@
 .flexbox {
 	display: flex;
 }
+
+.box {
+	flex: 1;
+}

@@ -58,7 +58,7 @@ export default class MainLayout extends React.Component {
 			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
 			 		 			.then( response => {
 			 		 				this.setState({
-			 		 					fullForecast: this.state.fullForecast.concat(response.data.hourly)
+			 		 					fullForecast: this.state.fullForecast.concat(response.data.hourly.data)
 			 		 				})
 			 		 			})
 			 		 			.catch( err => {
@@ -68,7 +68,7 @@ export default class MainLayout extends React.Component {
 							axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
 								.then( response => {
 									this.setState({
-										fullForecast: this.state.fullForecast.concat(response.data.hourly),
+										fullForecast: this.state.fullForecast.concat(response.data.hourly.data),
 										loading: false,
 										loadingDone: true
 									})
@@ -108,7 +108,6 @@ export default class MainLayout extends React.Component {
 		}
 
 		if (this.state.loadingDone) {
-			console.log(this.state.fullForecast)
 			const { forecast } = this.state; 
 			return (
 			<div className="container-fluid">
@@ -120,7 +119,7 @@ export default class MainLayout extends React.Component {
 				onUserInput={this.handleUserInput}
 				/> 
 
-				<ForecastContainer data={this.state.forecast} location={this.state.place} />
+				<ForecastContainer data={this.state.forecast} location={this.state.place} fullForecast={this.state.fullForecast} />
 
 			</div>
 				)		
