@@ -28,8 +28,8 @@ export default class ForecastLineChart extends React.Component {
 		const { data, location } = this.props;
 		console.log(data);
 		return (
-			<div className="chart">
-			<ResponsiveContainer height={200}>
+			<div>
+			<ResponsiveContainer height={300}>
 				<AreaChart data={data} margin={{ top: 75, right: 0, left: 0, bottom: 5 }}>
 					<defs>
 					   <linearGradient id="chartcolor" x1="0" y1="0" x2="0" y2="1">
@@ -38,7 +38,7 @@ export default class ForecastLineChart extends React.Component {
 					   </linearGradient>
 					</defs>
 					  <XAxis dataKey="time" tickLine={false} tick={false} />
-					  <YAxis type="number" tickLine={false} tick={false}  domain={['dataMin - 5', 'dataMax + 5']} />
+					  <YAxis type="number" hide={true}  domain={['dataMin - 5', 'dataMax + 5']} />
 					  <Area type="monotone" 
 					  dataKey="temperature" 
 					  stroke="rgb(104, 104, 104)" 
