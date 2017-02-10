@@ -6,7 +6,6 @@ export default class DayForecast extends React.Component {
 
 	render() {
 		const { data } = this.props;
-		console.log(data)
 		return (
 			<div className="well box">
 				<h4>ICON</h4>

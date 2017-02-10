@@ -26,14 +26,13 @@ export default class ForecastLineChart extends React.Component {
 
 	render() {
 		const { data, location } = this.props;
-		console.log(data);
 		return (
 			<div>
 			<ResponsiveContainer height={300}>
 				<AreaChart data={data} margin={{ top: 75, right: 0, left: 0, bottom: 5 }}>
 					<defs>
-					   <linearGradient id="chartcolor" x1="0" y1="0" x2="0" y2="1">
-					     <stop offset="5%" stopColor="rgb(151, 151, 151)" stopOpacity={1}/>
+					   <linearGradient id="chartcolor" x1="0" y1="0" x2="1" y2="0">
+					     <stop offset="5%" stopColor="rgb(51, 51, 51)" stopOpacity={1}/>
 					     <stop offset="95%" stopColor="rgb(151, 151, 151)" stopOpacity={0.4}/>
 					   </linearGradient>
 					</defs>
@@ -42,7 +41,7 @@ export default class ForecastLineChart extends React.Component {
 					  <Area type="monotone" 
 					  dataKey="temperature" 
 					  stroke="rgb(104, 104, 104)" 
-					  fill="rgb(151, 151, 151)" 
+					  fill="url(#chartcolor)" 
 					  activeDot={{stroke: "rgb(104, 104, 104)", fill: "rgb(104, 104, 104)", strokeWidth: 2, r: 2}} />
 					  <Tooltip content={<CustomizedToolTip />} cursor={false} />
 				</AreaChart>
