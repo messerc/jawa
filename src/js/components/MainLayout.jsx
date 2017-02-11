@@ -98,9 +98,63 @@ export default class MainLayout extends React.Component {
 
 	componentWillMount() {
 		navigator.geolocation.getCurrentPosition( position => {
-		return console.log(position.coords.latitude, position.coords.longitude)
+		this.setState({
+			loading: true,
+			lat: position.coords.latitude,
+			long: position.coords.longitude
 		})
+		const { lat, long } = this.state;
+		const geocoderKey = key.geocoderkey;
+		const darkKey= key.darkskykey;
+		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=${geocoderKey}`)
+			 .then( response => {
+			 	this.setState({
+			 		place: response.data.results[0].components.town
+			 	})
+			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
+			 		 .then( response => {
+			 		 	this.setState({
+			 		 		forecast: response.data,
+			 		 	})
+			 		 	for(let i=0; i < response.data.daily.data.length; i++) {
+			 		 		const time = response.data.daily.data[i].time;
+
+			 		 		if (i < 7) {
+			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+			 		 			.then( response => {
+			 		 				this.setState({
+			 		 					timezone: response.data.timezone,
+			 		 					fullForecast: this.state.fullForecast.concat(response.data.hourly.data)
+			 		 				})
+			 		 			})
+			 		 			.catch( err => {
+			 		 				console.log(err)
+			 		 			})
+			 		 		} else {
+							axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+								.then( response => {
+									this.setState({
+										fullForecast: this.state.fullForecast.concat(response.data.hourly.data),
+										loading: false,
+										loadingDone: true
+									})
+								})
+								.catch( err => {
+									console.log(err)
+								})
+			 		 		}
+			 		 	}
+			 		 })
+		 		 .catch( err => {
+		 		 	console.log(err);
+		 		})
+		 		})
+ 		 .catch( err => {
+ 		 	console.log(err);
+ 		})
+ 		})
 	}
+
 
 
 	render() {
@@ -112,14 +166,7 @@ export default class MainLayout extends React.Component {
 					<h3> Loading... </h3>
 				</div>
 			</div>
-		} else {
-			loadDisplay = 				
-			<div className="row">
-				<div className="col-md-8 col-md-offset-2">
-					<h3> Pick a spot you muthafucka </h3>
-				</div>
-			</div>
-		}
+		} 
 
 		if (this.state.loadingDone) {
 			const { forecast } = this.state; 
