@@ -14,11 +14,18 @@ module.exports = {
           {
             test: /\.jsx?$/,
             exclude: /(node_modules|bower_components)/,
-            loader: 'babel',
+            loader: 'babel-loader',
             query: {
               presets: ['react', 'es2015']
             }
+          },
+          {
+            include: /\.json$/,
+            loader: 'json-loader'
           }
       ]
+  },
+  resolve: {
+    extensions: ['', '.json', '.jsx', '.js']
   }
 };

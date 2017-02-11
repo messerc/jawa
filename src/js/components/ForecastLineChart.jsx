@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import 'moment-timezone';
 
 import { ResponsiveContainer, 
 		 XAxis, YAxis, CartesianGrid, AreaChart, Area, Tooltip, linearGradient} from 'recharts';
@@ -7,13 +8,14 @@ import { ResponsiveContainer,
 
 class CustomizedToolTip extends React.Component {
 	render() {
-		const { active } = this.props;
+		const { active, timezone } = this.props;
 		if (active) {
 			const { payload } = this.props; 
 			const displayInTip = payload[0].payload;
+			console.log(displayInTip);
 		return (
 			<div className="well well-sm">
-				<p>{moment.unix(displayInTip.time).format('dddd h a')}</p>
+				<p>{moment.unix(displayInTip.time).tz(timezone).format('dddd h a')}</p>
 				<p>{Math.round(displayInTip.temperature)} degrees</p>
 			</div>
 			)
@@ -25,7 +27,7 @@ class CustomizedToolTip extends React.Component {
 export default class ForecastLineChart extends React.Component {
 
 	render() {
-		const { data, location } = this.props;
+		const { data, location, timezone } = this.props;
 		return (
 			<div>
 			<ResponsiveContainer height={300}>
@@ -43,7 +45,7 @@ export default class ForecastLineChart extends React.Component {
 					  stroke="rgb(104, 104, 104)" 
 					  fill="url(#chartcolor)" 
 					  activeDot={{stroke: "rgb(104, 104, 104)", fill: "rgb(104, 104, 104)", strokeWidth: 2, r: 2}} />
-					  <Tooltip content={<CustomizedToolTip />} cursor={false} />
+					  <Tooltip content={<CustomizedToolTip timezone={timezone} />} cursor={false} />
 				</AreaChart>
 			</ResponsiveContainer>
 			</div>

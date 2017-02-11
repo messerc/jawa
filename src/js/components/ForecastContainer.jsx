@@ -13,7 +13,7 @@ export default class ForecastContainer extends React.Component {
 	}
 
 	render() {
-		const { data, location, fullForecast } = this.props;
+		const { data, location, fullForecast, timezone } = this.props;
 		const dailyForecasts = data.daily.data.map( forecast => {
 			return <DayForecast data={forecast} key={forecast.time} />
 		})
@@ -21,7 +21,7 @@ export default class ForecastContainer extends React.Component {
 		<div className="row">
 			<div className="col-md-8 col-md-offset-2">
 				<ForecastOverview data={data.currently} location={location} />
-				<ForecastLineChart data={fullForecast} />
+				<ForecastLineChart data={fullForecast} timezone={timezone} />
 			<div className="flexbox">
 				{dailyForecasts}
 			</div>

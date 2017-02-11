@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Router, Route, Link } from 'react-router';
+import moment from 'moment';
+import 'moment-timezone';
 
 import ForecastContainer from './ForecastContainer.jsx'
 import HourlyDisplay from './HourlyDisplay.jsx'
@@ -17,6 +19,7 @@ export default class MainLayout extends React.Component {
 			place: null, 
 			forecast: null, 
 			fullForecast: [],
+			timezone: null,
 			loadingDone: false, 
 			loading: false
 		}
@@ -49,15 +52,19 @@ export default class MainLayout extends React.Component {
 			 	const long = response.data.results[0].geometry.lng
 			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
 			 		 .then( response => {
+			 		 	console.log(response.data)
 			 		 	this.setState({
 			 		 		forecast: response.data,
 			 		 	})
 			 		 	for(let i=0; i < response.data.daily.data.length; i++) {
 			 		 		const time = response.data.daily.data[i].time;
+
 			 		 		if (i < 7) {
 			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
 			 		 			.then( response => {
+			 		 				console.log(response.data);
 			 		 				this.setState({
+			 		 					timezone: response.data.timezone,
 			 		 					fullForecast: this.state.fullForecast.concat(response.data.hourly.data)
 			 		 				})
 			 		 			})
@@ -119,7 +126,7 @@ export default class MainLayout extends React.Component {
 				onUserInput={this.handleUserInput}
 				/> 
 
-				<ForecastContainer data={this.state.forecast} location={this.state.place} fullForecast={this.state.fullForecast} />
+				<ForecastContainer data={this.state.forecast} location={this.state.place} fullForecast={this.state.fullForecast} timezone={this.state.timezone} />
 
 			</div>
 				)		
