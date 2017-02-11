@@ -21,7 +21,9 @@ export default class MainLayout extends React.Component {
 			fullForecast: [],
 			timezone: null,
 			loadingDone: false, 
-			loading: false
+			loading: false,
+			lat: null,
+			long: null
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleUserInput = this.handleUserInput.bind(this);
@@ -46,10 +48,11 @@ export default class MainLayout extends React.Component {
 		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${this.state.value}&key=${geocoderKey}`)
 			 .then( response => {
 			 	this.setState({
-			 		place: response.data.results[0].components.city
+			 		place: response.data.results[0].components.city,
+			 		lat: response.data.results[0].geometry.lat,
+			 		long: response.data.results[0].geometry.lng
 			 	})
-			 	const lat = response.data.results[0].geometry.lat;
-			 	const long = response.data.results[0].geometry.lng
+			 	const { lat, long } = this.state
 			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
 			 		 .then( response => {
 			 		 	this.setState({
@@ -91,6 +94,12 @@ export default class MainLayout extends React.Component {
 			 .catch( err => {
 			 	console.log(err);
 			 })
+	}
+
+	componentWillMount() {
+		navigator.geolocation.getCurrentPosition( position => {
+		return console.log(position.coords.latitude, position.coords.longitude)
+		})
 	}
 
 

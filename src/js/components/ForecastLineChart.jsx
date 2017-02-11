@@ -39,9 +39,18 @@ export default class ForecastLineChart extends React.Component {
 				return <ReferenceLine x={forecast.time} key={forecast.time} stroke="rgb(151, 151, 151)" />
 			}
 		})
-		const linearGradients = data.map( (forecast, i) => {
-			return null;
-		})
+
+		const getTempAvg = () => {
+			let totalTempSump = 0;
+
+			for (let i=0; i < data.length; i++) {
+				totalTempSump = totalTempSump + data[i].temperature
+			}
+
+			return totalTempSump / data.length
+		}
+
+
 		return (
 			<div>
 			<ResponsiveContainer height={300}>
@@ -60,6 +69,7 @@ export default class ForecastLineChart extends React.Component {
 					  fill="url(#chartcolor)" 
 					  activeDot={{stroke: "rgb(104, 104, 104)", fill: "rgb(104, 104, 104)", strokeWidth: 2, r: 2}} />
 					  <Tooltip content={<CustomizedToolTip timezone={timezone} />} cursor={false} />
+					  <ReferenceLine y={getTempAvg()} stroke="red" />
 					  {referenceLines}
 				</AreaChart>
 			</ResponsiveContainer>
