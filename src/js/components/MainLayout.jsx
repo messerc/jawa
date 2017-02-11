@@ -52,7 +52,6 @@ export default class MainLayout extends React.Component {
 			 	const long = response.data.results[0].geometry.lng
 			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
 			 		 .then( response => {
-			 		 	console.log(response.data)
 			 		 	this.setState({
 			 		 		forecast: response.data,
 			 		 	})
@@ -62,7 +61,6 @@ export default class MainLayout extends React.Component {
 			 		 		if (i < 7) {
 			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
 			 		 			.then( response => {
-			 		 				console.log(response.data);
 			 		 				this.setState({
 			 		 					timezone: response.data.timezone,
 			 		 					fullForecast: this.state.fullForecast.concat(response.data.hourly.data)

@@ -6,7 +6,6 @@ export default class ForecastOverview extends React.Component {
 
 	render() {
 		const { data, location } = this.props;
-		console.log(data)
 		return (
 			<div>
 			<h2>{location}</h2>
