@@ -69,7 +69,7 @@ export default class ForecastLineChart extends React.Component {
 					  fill="url(#chartcolor)" 
 					  activeDot={{stroke: "rgb(104, 104, 104)", fill: "rgb(104, 104, 104)", strokeWidth: 2, r: 2}} />
 					  <Tooltip content={<CustomizedToolTip timezone={timezone} />} cursor={false} />
-					  <ReferenceLine y={getTempAvg()} stroke="red" />
+					  <ReferenceLine y={getTempAvg()} stroke="rgb(255, 157, 8)" strokeDasharray="3 3" />
 					  {referenceLines}
 				</AreaChart>
 			</ResponsiveContainer>
