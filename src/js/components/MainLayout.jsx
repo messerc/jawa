@@ -4,11 +4,10 @@ import { Router, Route, Link } from 'react-router';
 import moment from 'moment';
 import 'moment-timezone';
 
-import ForecastContainer from './ForecastContainer.jsx'
-import HourlyDisplay from './HourlyDisplay.jsx'
-import Header from './Header.jsx'
-import Form from './Form.jsx'
-import key from './APIkey.js'
+import ForecastContainer from './ForecastContainer.jsx';
+import HourlyDisplay from './HourlyDisplay.jsx';
+import Header from './Header.jsx';
+import Form from './Form.jsx';
 
 export default class MainLayout extends React.Component {
 	constructor(props) {
@@ -22,8 +21,11 @@ export default class MainLayout extends React.Component {
 			timezone: null,
 			loadingDone: false, 
 			loading: false,
+			failed: false,
 			lat: null,
-			long: null
+			long: null,
+			darkskyKey: '24f1dce0f1dc5ed2b1898b26cc39d0f2',
+			geocoderKey: 'ce1f2bbcb74bb814b7c6ae6ea1565685',
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleUserInput = this.handleUserInput.bind(this);
@@ -43,17 +45,15 @@ export default class MainLayout extends React.Component {
 			loading: true,
 			loadingDone: false
 		})
-		const darkKey= key.darkskykey;
-		const geocoderKey = key.geocoderkey;
-		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${this.state.value}&key=${geocoderKey}`)
+		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${this.state.value}&key=${this.state.geocoderKey}`)
 			 .then( response => {
 			 	this.setState({
 			 		place: response.data.results[0].components.city,
 			 		lat: response.data.results[0].geometry.lat,
 			 		long: response.data.results[0].geometry.lng
 			 	})
-			 	const { lat, long } = this.state
-			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
+			 	const { lat, long, darkskyKey, geocoderKey } = this.state
+			 	axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}`)
 			 		 .then( response => {
 			 		 	this.setState({
 			 		 		forecast: response.data,
@@ -62,7 +62,7 @@ export default class MainLayout extends React.Component {
 			 		 		const time = response.data.daily.data[i].time;
 
 			 		 		if (i < 7) {
-			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+			 		 		axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long},${time}`)
 			 		 			.then( response => {
 			 		 				this.setState({
 			 		 					timezone: response.data.timezone,
@@ -73,7 +73,7 @@ export default class MainLayout extends React.Component {
 			 		 				console.log(err)
 			 		 			})
 			 		 		} else {
-							axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+							axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long},${time}`)
 								.then( response => {
 									this.setState({
 										fullForecast: this.state.fullForecast.concat(response.data.hourly.data),
@@ -92,7 +92,11 @@ export default class MainLayout extends React.Component {
 			 		 })
 			 })
 			 .catch( err => {
-			 	console.log(err);
+			 	this.setState({
+			 		loading: false,
+			 		loadingDone: false,
+			 		failed: true,
+			 	})
 			 })
 	}
 
@@ -103,15 +107,13 @@ export default class MainLayout extends React.Component {
 			lat: position.coords.latitude,
 			long: position.coords.longitude
 		})
-		const { lat, long } = this.state;
-		const geocoderKey = key.geocoderkey;
-		const darkKey= key.darkskykey;
+		const { lat, long, darkskyKey, geocoderKey } = this.state;
 		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=${geocoderKey}`)
 			 .then( response => {
 			 	this.setState({
 			 		place: response.data.results[0].components.town
 			 	})
-			 	axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long}`)
+			 	axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}`)
 			 		 .then( response => {
 			 		 	this.setState({
 			 		 		forecast: response.data,
@@ -120,7 +122,7 @@ export default class MainLayout extends React.Component {
 			 		 		const time = response.data.daily.data[i].time;
 
 			 		 		if (i < 7) {
-			 		 		axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+			 		 		axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long},${time}`)
 			 		 			.then( response => {
 			 		 				this.setState({
 			 		 					timezone: response.data.timezone,
@@ -131,12 +133,12 @@ export default class MainLayout extends React.Component {
 			 		 				console.log(err)
 			 		 			})
 			 		 		} else {
-							axios.get(`https://api.darksky.net/forecast/${darkKey}/${lat},${long},${time}`)
+							axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long},${time}`)
 								.then( response => {
 									this.setState({
 										fullForecast: this.state.fullForecast.concat(response.data.hourly.data),
 										loading: false,
-										loadingDone: true
+										loadingDone: true,
 									})
 								})
 								.catch( err => {
@@ -159,14 +161,21 @@ export default class MainLayout extends React.Component {
 
 	render() {
 		let loadDisplay = null;
-		if (this.state.loading) {
+		if (this.state.loading || !this.state.failed) {
 			loadDisplay = 
 			<div className="row">
 				<div className="col-md-8 col-md-offset-2">
 					<h3> Loading... </h3>
 				</div>
 			</div>
-		} 
+		} else {
+			loadDisplay = 
+			<div className="row">
+				<div className="col-md-8 col-md-offset-2">
+					<h3> No Matches Found </h3>
+				</div>
+			</div>
+		}
 
 		if (this.state.loadingDone) {
 			const { forecast } = this.state; 
@@ -175,9 +184,9 @@ export default class MainLayout extends React.Component {
 				<Header />
 
 				<Form 
-				onSubmit={this.handleSubmit}
-				text={this.state.value}
-				onUserInput={this.handleUserInput}
+				  onSubmit={this.handleSubmit}
+				  text={this.state.value}
+				  onUserInput={this.handleUserInput}
 				/> 
 
 				<ForecastContainer data={this.state.forecast} location={this.state.place} fullForecast={this.state.fullForecast} timezone={this.state.timezone} />
@@ -189,9 +198,9 @@ export default class MainLayout extends React.Component {
 				<Header />
 
 				<Form 
-				onSubmit={this.handleSubmit}
-				text={this.state.value}
-				onUserInput={this.handleUserInput}
+				  onSubmit={this.handleSubmit}
+				  text={this.state.value}
+				  onUserInput={this.handleUserInput}
 				/> 
 
 				{loadDisplay}
