@@ -12,7 +12,6 @@ class CustomizedToolTip extends React.Component {
 		if (active) {
 			const { payload } = this.props; 
 			const displayInTip = payload[0].payload;
-			console.log(displayInTip);
 		return (
 			<div className="well well-sm">
 				<p>{moment.unix(displayInTip.time).tz(timezone).format('dddd h a')}</p>
@@ -28,7 +27,6 @@ export default class ForecastLineChart extends React.Component {
 
 	render() {
 		const { data, location, timezone } = this.props;
-		console.log(data);
 		let currentDay = moment.unix(data[0].time).tz(timezone).format('dddd');
 		const referenceLines = data.map( (forecast) => {
 			const day = moment.unix(forecast.time).tz(timezone).format('dddd');
@@ -52,7 +50,6 @@ export default class ForecastLineChart extends React.Component {
 
 
 		return (
-			<div>
 			<ResponsiveContainer height={300}>
 				<AreaChart data={data} margin={{ top: 100, right: 0, left: 0, bottom: 5 }}>
 					<defs>
@@ -73,7 +70,6 @@ export default class ForecastLineChart extends React.Component {
 					  {referenceLines}
 				</AreaChart>
 			</ResponsiveContainer>
-			</div>
 			)
 	}
 }

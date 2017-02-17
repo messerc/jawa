@@ -15,7 +15,10 @@ export default class MainLayout extends React.Component {
 
 		this.state = {
 			value: '', 
-			place: null, 
+			place: {
+				city: null,
+				state: null,
+			}, 
 			forecast: null, 
 			fullForecast: [],
 			timezone: null,
@@ -47,8 +50,12 @@ export default class MainLayout extends React.Component {
 		})
 		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${this.state.value}&key=${this.state.geocoderKey}`)
 			 .then( response => {
+			 	console.log(response.data.results[0].components)
 			 	this.setState({
-			 		place: response.data.results[0].components.city,
+			 		place: {
+			 			city: response.data.results[0].components.city,
+			 			state: response.data.results[0].components.state
+			 		},
 			 		lat: response.data.results[0].geometry.lat,
 			 		long: response.data.results[0].geometry.lng
 			 	})

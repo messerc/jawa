@@ -18,13 +18,15 @@ export default class ForecastContainer extends React.Component {
 			return <DayForecast data={forecast} key={forecast.time} />
 		})
 		return (
-		<div className="row">
-			<div className="col-md-8 col-md-offset-2">
-				<ForecastOverview data={data.currently} location={location} />
-				<ForecastLineChart data={fullForecast} timezone={timezone} />
+		<div>
+			<div className="row">
+				<div className="col-md-8 col-md-offset-2">
+					<ForecastOverview data={data.currently} location={location} />
+				</div>
+			</div>
+			<ForecastLineChart data={fullForecast} timezone={timezone} />
 			<div className="flexbox">
 				{dailyForecasts}
-			</div>
 			</div>
 		</div>
 			)
