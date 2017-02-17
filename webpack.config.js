@@ -9,9 +9,6 @@ module.exports = {
       path: buildPath,
       filename: "bundle.js"
   },
-  eslint: {
-    configFile: './.eslintrc'
-  },
   module: {
       loaders: [
           {
@@ -26,11 +23,6 @@ module.exports = {
             include: /\.json$/,
             loader: 'json-loader'
           },
-          {
-            test: /\.js$/, 
-            exclude: /node_modules/,
-            loaders: ['eslint-loader', 'babel-loader']
-          }
       ]
   },
   resolve: {
