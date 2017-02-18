@@ -19,10 +19,15 @@ export default class Form extends React.Component {
 	render() {
 		return (
 		<div className="row">
-			<div className="col-md-8 col-md-offset-2">
-				<form onSubmit={this.handleSubmit}>
-					<div className="input-group">
-					<input type="text" value={this.props.text} ref={(input) => this.textInput = input} onChange={this.handleChange} className="form-control" />
+			<div style={{display: 'block', textAlign: 'center'}} className="form-group">
+				<form style={{display: 'inline-block', margin: 'auto', width: '300px'}} onSubmit={this.handleSubmit}>
+					<div>
+					<input type="text" 
+						   value={this.props.text} 
+						   ref={(input) => this.textInput = input} 
+						   onChange={this.handleChange} 
+						   className="form-control"
+						   placeholder="San Francisco, CA..." />
 					</div>
 				</form> 
 			</div>
