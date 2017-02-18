@@ -27,27 +27,6 @@ export default class ForecastLineChart extends React.Component {
 
 	render() {
 		const { data, location, timezone } = this.props;
-		let currentDay = moment.unix(data[0].time).tz(timezone).format('dddd');
-		const referenceLines = data.map( (forecast) => {
-			const day = moment.unix(forecast.time).tz(timezone).format('dddd');
-			if (day === currentDay) {
-				return null;
-			} else if (day !== currentDay) {
-				currentDay = day;
-				return <ReferenceLine x={forecast.time} key={forecast.time} stroke="rgb(151, 151, 151)" />
-			}
-		})
-
-		const getTempAvg = () => {
-			let totalTempSump = 0;
-
-			for (let i=0; i < data.length; i++) {
-				totalTempSump = totalTempSump + data[i].temperature
-			}
-
-			return totalTempSump / data.length
-		}
-
 
 		return (
 			<ResponsiveContainer height={300}>
@@ -66,8 +45,6 @@ export default class ForecastLineChart extends React.Component {
 					  fill="url(#chartcolor)" 
 					  activeDot={{stroke: "rgb(104, 104, 104)", fill: "rgb(104, 104, 104)", strokeWidth: 2, r: 2}} />
 					  <Tooltip content={<CustomizedToolTip timezone={timezone} />} cursor={false} />
-					  <ReferenceLine y={getTempAvg()} stroke="rgb(255, 157, 8)" strokeDasharray="3 3" />
-					  {referenceLines}
 				</AreaChart>
 			</ResponsiveContainer>
 			)

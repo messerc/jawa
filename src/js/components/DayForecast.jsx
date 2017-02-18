@@ -6,6 +6,7 @@ import WeatherIcon from '../../icons/WeatherIcon.jsx'
 
 export default class DayForecast extends React.Component {
 
+
 	render() {
 		const { data } = this.props;
 		return (

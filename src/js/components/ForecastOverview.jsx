@@ -11,10 +11,10 @@ export default class ForecastOverview extends React.Component {
 		console.log(data);
 		return (
 			<div>
-				<div className="col-md-2">
+				<div className="col-md-2 col-xs-12">
 					<BigWeatherIcon icon={data.icon} />
 				</div>
-				<div className="col-md-10">
+				<div className="col-md-10 col-xs-12">
 					<h2>{location.town}</h2>
 					<h6 className="text-muted">{location.state}</h6>
 					<h4 className="text-muted small" style={{margin: "0px"}}> Currently: {data.summary} </h4>
