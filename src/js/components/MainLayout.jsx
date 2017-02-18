@@ -16,7 +16,7 @@ export default class MainLayout extends React.Component {
 		this.state = {
 			value: '', 
 			place: {
-				city: null,
+				town: null,
 				state: null,
 			}, 
 			forecast: null, 
@@ -53,7 +53,7 @@ export default class MainLayout extends React.Component {
 			 	console.log(response.data.results[0].components)
 			 	this.setState({
 			 		place: {
-			 			city: response.data.results[0].components.city,
+			 			town: response.data.results[0].components.city,
 			 			state: response.data.results[0].components.state
 			 		},
 			 		lat: response.data.results[0].geometry.lat,
@@ -117,8 +117,12 @@ export default class MainLayout extends React.Component {
 		const { lat, long, darkskyKey, geocoderKey } = this.state;
 		axios.get(`http://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=${geocoderKey}`)
 			 .then( response => {
+			 	console.log(response.data.results[0])
 			 	this.setState({
-			 		place: response.data.results[0].components.town
+			 		place: {
+			 			town: response.data.results[0].components.town,
+			 			state: response.data.results[0].components.state,
+			 		}
 			 	})
 			 	axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}`)
 			 		 .then( response => {

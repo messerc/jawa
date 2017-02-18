@@ -11,9 +11,8 @@ export default class DayForecast extends React.Component {
 		return (
 			<div className="well box">
 				<WeatherIcon icon={data.icon} /> 
-				<h4>{moment.unix(data.time).format('ddd')}</h4>
-				<h6>{Math.round(data.temperatureMax)} | {Math.round(data.temperatureMin)} </h6>
-				<h6>{data.summary}</h6>
+				<h4 style={{textAlign: 'center'}}>{moment.unix(data.time).format('ddd')}</h4>
+				<h6 style={{textAlign: 'center'}}>{Math.round(data.temperatureMax)} | {Math.round(data.temperatureMin)} </h6>
 			</div>
 			)
 	}

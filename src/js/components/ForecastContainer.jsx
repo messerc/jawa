@@ -24,9 +24,13 @@ export default class ForecastContainer extends React.Component {
 					<ForecastOverview data={data.currently} location={location} />
 				</div>
 			</div>
-			<ForecastLineChart data={fullForecast} timezone={timezone} />
-			<div className="flexbox">
-				{dailyForecasts}
+			<div className="row">
+				<div className="col-md-8 col-md-offset-2">
+					<ForecastLineChart data={fullForecast} timezone={timezone} />
+					<div className="flexbox">
+						{dailyForecasts}
+					</div>
+				</div>
 			</div>
 		</div>
 			)
