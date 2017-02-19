@@ -20,14 +20,17 @@ export default class ForecastContainer extends React.Component {
 		})
 		return (
 		<div>
-		<br />
-		<br />
 			<div className="row">
-				<div className="col-sm-3 col-sm-offset-2 col-xs-6 ">
-					<ForecastOverview data={data.currently} location={location} />
+				<div className="col-sm-8 col-sm-offset-2">
+					<h3>Currently...</h3>
 				</div>
-				<div className="col-sm-5 col-xs-6 ">
-					<ForecastLineChart data={data.hourly.data} />
+			</div>
+			<br />
+			<div className="row">
+				<div className="col-sm-8 col-sm-offset-2">
+					<div className="col-sm-6 col-xs-8 ">
+						<ForecastOverview data={data.currently} location={location} />
+					</div>
 				</div>
 			</div>
 		<br />

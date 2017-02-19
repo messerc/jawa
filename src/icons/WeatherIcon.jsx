@@ -90,7 +90,7 @@ const icons = {
 
 const WeatherIcon = props => (
 	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-		 width="60px" height="60px" viewBox="0 0 100 100" enableBackground="new 0 0 100 100" >
+		 width="50px" height="50px" viewBox="0 0 75 75" enableBackground="new 0 0 75 75" >
 	<path fillRule="evenodd" clipRule="evenodd" d={icons[props.icon]}/>
 	</svg>
 );
