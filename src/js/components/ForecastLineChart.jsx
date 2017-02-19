@@ -27,10 +27,10 @@ export default class ForecastLineChart extends React.Component {
 
 	render() {
 		const { data, location, timezone } = this.props;
-
+		console.log(data);
 		return (
-			<ResponsiveContainer height={300}>
-				<AreaChart data={data} margin={{ top: 100, right: 0, left: 0, bottom: 5 }}>
+			<ResponsiveContainer height={150} width={500}>
+				<AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 5 }}>
 					<defs>
 					   <linearGradient id="chartcolor" x1="0" y1="0" x2="0" y2="1">
 					     <stop offset="5%" stopColor="rgb(200, 204, 0)" stopOpacity={1}/>
