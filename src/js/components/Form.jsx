@@ -27,7 +27,7 @@ export default class Form extends React.Component {
 						   ref={(input) => this.textInput = input} 
 						   onChange={this.handleChange} 
 						   className="form-control"
-						   placeholder="San Francisco, CA..." />
+						   placeholder="Find a restaurant..." />
 					</div>
 				</form> 
 			</div>
